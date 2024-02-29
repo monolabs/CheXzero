@@ -65,7 +65,7 @@ def img_to_hdf5(cxr_paths: List[Union[str, Path]], out_filepath: str, resolution
 
 def get_files(directory):
     files = []
-    for (dirpath, dirnames, filenames) in os.walk(directory):
+    for (dirpath, dirnames, filenames) in tqdm(os.walk(directory)):
         for file in filenames:
             if file.endswith(".jpg"):
                 files.append(os.path.join(dirpath, file))
@@ -98,7 +98,7 @@ def getIndexOfLast(l, element):
 def write_report_csv(cxr_paths, txt_folder, out_path):
     imps = {"filename": [], "impression": []}
     txt_reports = []
-    for cxr_path in cxr_paths:
+    for cxr_path in tqdm(cxr_paths):
         tokens = cxr_path.split('/')
         study_num = tokens[-2]
         patient_num = tokens[-3]
