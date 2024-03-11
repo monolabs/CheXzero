@@ -23,7 +23,7 @@ if __name__ == "__main__":
         img_to_hdf5(cxr_paths, args.cxr_out_path)
 
         #Write CSV File Containing Impressions for each Chest X-ray
-        write_report_csv(cxr_paths, args.radiology_reports_path, args.mimic_impressions_path)
+        # write_report_csv(cxr_paths, args.radiology_reports_path, args.mimic_impressions_path)
     elif args.dataset_type == "chexpert-test": 
         # Get all test paths based on cxr dir
         cxr_dir = Path(args.chest_x_ray_path)
