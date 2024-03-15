@@ -174,6 +174,7 @@ def preprocess_text(texts, model):
     return result
 
 def make(config, cxr_filepath, txt_filepath, model_path=None): 
+    # NOT USED
     '''
     FUNCTION: make
     ---------------------------------
@@ -198,6 +199,7 @@ def make(config, cxr_filepath, txt_filepath, model_path=None):
 
 
 def train_main(cxr_filepath, txt_filepath, hyperparams, output_path, model_path=None, pretrained=False): 
+    # NOT USED
     '''
     args: 
         * cxr_filpath- str filepath to cxr images

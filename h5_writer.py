@@ -23,7 +23,7 @@ import h5py
     # img_to_hdf5(cxr_paths, out_filepath)
 
 split = 'train'
-for prefix in range(11, 20):
+for prefix in range(10, 20):
     cxr_paths = pd.read_csv(f'data/mimic-cxr-data/files/{split}-p{prefix}.csv')['Path'].tolist()
     out_filepath = f'data/mimic-cxr-data/h5files/{split}/p{prefix}.h5'
     img_to_hdf5(cxr_paths, out_filepath)

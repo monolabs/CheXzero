@@ -1,0 +1,14 @@
+cd CxeXzero
+
+
+# test multi
+
+python run_train_multi.py --cxr_folder data/mimic-cxr-data/h5files/train-smoke-test/ --txt_folder data/mimic-cxr-data/reports/train-smoke-test/ --model_name SMOKE_TEST --batch_size 8 --save_interval 1000000 --save_dir data/chexzero-experiments/
+
+
+# full
+
+python run_train.py --cxr_filepath data/mimic-cxr-data/h5files/train/ \
+--txt_filepath data/mimic-cxr-data/reports/train/
+--model_name TEST
+--
