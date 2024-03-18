@@ -29,7 +29,6 @@ config = {
     'batch_size': 64,
     'epochs': 10,
     'lr': 5e-5,
-    'save_interval': 1000,
     'log_interval': 100,
     'save_dir': 'data/chexzero-experiments/',
     'seed': 1234,
@@ -86,7 +85,9 @@ def experiment_pipeline(
     report_freq = config.log_interval
     best_roc_auc = -np.inf
     
-    total_batch = config.epochs*len(train_loaders)*len(train_loader)
+    train_total_batches = [len(train_loader) for train_loader in train_loaders]
+    total_batches = config.epochs * len(train_loaders) * np.sum(train_total_batches)
+    
     batch_train_losses = []
     batch_val_roc_auc = []
     y_true = make_true_labels(cxr_true_labels_path=config.val_groundtruth, cxr_labels=cxr_labels)
@@ -95,9 +96,9 @@ def experiment_pipeline(
         running_loss = 0.0 # running loss over batch
         
         for t, train_loader in enumerate(train_loaders):
-            for b, data in train_loader, desc='batch':
+            for b, data in enumerate(train_loader):
                 
-                print(f'training epoch {e+1}/{config.epochs} | train loader {t+1}/{len(train_loaders)} | batch {b+1}/{len(train_loader)} | total batch {batch_ct+1}/{total_batch}'
+                print(f'training epoch {e+1}/{config.epochs} | train loader {t+1}/{len(train_loaders)} | batch {b+1}/{len(train_loader)} | total batch {batch_ct+1}/{total_batches}')
                       
                 # get the images
                 images = data['img']
