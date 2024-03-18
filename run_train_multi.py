@@ -15,12 +15,12 @@ from simple_tokenizer import SimpleTokenizer
 
 from train_multi import load_data
 from train import load_clip, preprocess_text
-from zero_shot import run_cxr_zero_shot, run_zero_shot
+from run_train import train_batch, train_log, save
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--cxr_folder', type=str, default='data/cxr/', help="Directory to load chest x-ray image data from.")
-    parser.add_argument('--txt_folder', type=str, default='data/texts/', help="Directory to load radiology report impressions text from.")
+    parser.add_argument('--train_cxr_folder', type=str, default='data/cxr/', help="Directory to load chest x-ray image data from.")
+    parser.add_argument('--train_txt_folder', type=str, default='data/texts/', help="Directory to load radiology report impressions text from.")
     parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--epochs', type=int, default=4)
     parser.add_argument('--lr', type=float, default=1e-4)
@@ -53,7 +53,7 @@ def model_pipeline(config, verbose=0):
 
 def make(config): 
     pretrained = not config.random_init
-    data_loaders, device = load_data(config.cxr_folder, config.txt_folder, batch_size=config.batch_size, pretrained=pretrained, column="impression")
+    data_loaders, device = load_data(config.train_cxr_folder, config.train_txt_folder, batch_size=config.batch_size, pretrained=pretrained, column="impression")
     model = load_clip(model_path=None, pretrained=pretrained, context_length=config.context_length)
     model.to(device)
     print('Model on Device.')
@@ -110,37 +110,6 @@ def train(model, loaders, device, criterion, optimizer, config):
         model_path = os.path.join(model_save_dir, f"checkpoint_epoch{e}.pt")
         print("Saved checkpoint to: ", model_path)
         save(model, model_path)
-
-def train_batch(images, texts, model, device, criterion, optimizer):
-    images, texts = images.to(device), texts.to(device)
-    
-    # Forward pass ➡
-    logits_per_image, logits_per_text = model(images, texts)
-    
-    # Create labels
-    batch_size = images.shape[0]
-    labels = torch.arange(batch_size).to(device)
-    
-    # Compute loss
-    loss_img = criterion(logits_per_image, labels)
-    loss_txt = criterion(logits_per_text, labels)
-    loss = (loss_img + loss_txt)/2 # avg. img and txt loss
-
-    # Backward pass ⬅
-    optimizer.zero_grad()
-    loss.backward()
-    
-    # Step with optimizer
-    optimizer.step()
-        
-    return loss
-
-def train_log(loss, example_ct, epoch):
-    loss = float(loss)
-    print(f"Loss after " + str(example_ct).zfill(5) + f" examples: {loss:.3f}")
-
-def save(model, path): 
-    torch.save(model.state_dict(), path)
 
 if __name__ == "__main__":
     args = parse_args()

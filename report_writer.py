@@ -2,7 +2,7 @@ import pandas as pd
 from data_process import write_report_csv
 
 
-split = 'train'
+split = 'all'
 txt_folder = 'data/mimic-cxr-data/reports/files/'
 for prefix in range(10, 20):
     cxr_paths = pd.read_csv(f'data/mimic-cxr-data/files/{split}-p{prefix}.csv')['Path'].tolist()

@@ -22,8 +22,6 @@ from model import CLIP
 from simple_tokenizer import SimpleTokenizer
 
 from train import CXRDataset
-from libauc.losses import AUCMLoss 
-from libauc.optimizers import PESG
 
 def load_data(cxr_folder, txt_folder, batch_size=4, column='impression', pretrained=False, verbose=False): 
     if torch.cuda.is_available():  

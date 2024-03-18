@@ -72,11 +72,9 @@ def train(model, loader, device, criterion, optimizer, config):
         os.makedirs(model_save_dir)
     
     # Run training
-    total_batches = len(loader) * config.epochs
     example_ct = 0  # number of examples seen
     batch_ct = 0
     report_freq = config.log_interval
-    highest_val_auc = 0 # save highest mean auc
     
     for epoch in range(config.epochs):
         running_loss = 0.0 # running loss over batch
