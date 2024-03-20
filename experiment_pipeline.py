@@ -71,14 +71,14 @@ def experiment_pipeline(
 ): 
     
     model_name = f"{config.model_name}_batchsize_{config.batch_size}_clength_{config.context_length}_opt_{config.optimizer}_lr_{config.lr}_momentum_{config.momentum}_seed_{config.seed}"
-    logger = logging.getLogger(__name__)
-    log_path = os.path.join(config.save_dir, model_name, 'log.log')
-    logging.basicConfig(filename=log_path, encoding='utf-8', level=logging.DEBUG)
-    
     model_save_dir = os.path.join(config.save_dir, model_name)
     if not os.path.exists(model_save_dir): 
         # Create a new folder if not exists
         os.makedirs(model_save_dir)
+        
+    logger = logging.getLogger(__name__)
+    log_path = os.path.join(model_save_dir, 'log.log')
+    logging.basicConfig(filename=log_path, encoding='utf-8', level=logging.DEBUG)
     
     # save config dictionary
     config_path = os.path.join(model_save_dir, "config.json")
