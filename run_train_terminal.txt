@@ -6,9 +6,28 @@ cd CxeXzero
 python run_train_multi.py --cxr_folder data/mimic-cxr-data/h5files/train-smoke-test/ --txt_folder data/mimic-cxr-data/reports/train-smoke-test/ --model_name SMOKE_TEST --batch_size 8 --save_interval 1000000 --save_dir data/chexzero-experiments/
 
 
-# full
+# smoke test train
 
-python run_train.py --cxr_filepath data/mimic-cxr-data/h5files/train/ \
---txt_filepath data/mimic-cxr-data/reports/train/
---model_name TEST
---
+python experiment_pipeline.py --train_cxr_folder data/mimic-cxr-data/h5files/train-smoke-test/ --train_txt_folder data/mimic-cxr-data/reports/train-smoke-test/ --batch_size 64 --epochs 10 --lr 0.00005 --val_interval 100 --model_name smoketest
+
+
+# full train
+
+python experiment_pipeline.py --batch_size 64 --epochs 10 --lr 0.00005 --val_interval 100 --model_name fullrun
+    
+    
+    parser.add_argument('--train_cxr_folder', type=str, default='data/mimic-cxr-data/h5files/train/', help="Directory to load chest x-ray image data from.")
+    parser.add_argument('--train_txt_folder', type=str, default='data/mimic-cxr-data/reports/train/', help="Directory to load radiology report impressions text from.")
+    parser.add_argument('--val_cxr_filepath', type=str, default='data/chexpert-test/chexpert-test/chexlocalize/CheXpert/chexpert_test.h5', help='.h5 file: validation images')
+    parser.add_argument('--val_groundtruth', type=str, default='data/chexpert-test/groundtruth.csv', help="CSV file: validation groundtruth")
+    parser.add_argument('--batch_size', type=int, default=16)
+    parser.add_argument('--epochs', type=int, default=4)
+    parser.add_argument('--lr', type=float, default=1e-4)
+    parser.add_argument('--val_interval', type=int, default=100, help="number of batch before validation is performed.")
+    parser.add_argument('--save_dir', type=str, default="data/chexzero-experiments/", help="Directory to save the trained model.")
+    parser.add_argument('--seed', type=int, default=1234)
+    parser.add_argument('--optimizer', type=str, default="sgd")
+    parser.add_argument('--momentum', type=float, default=0.9)
+    parser.add_argument('--context_length', type=int, default=77)
+    parser.add_argument('--random_init', action='store_true')
+    parser.add_argument('--model_name', type=str, default="model")
