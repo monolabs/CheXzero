@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('--epochs', type=int, default=4)
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--val_interval', type=int, default=100, help="number of batch before validation is performed.")
-    parser.add_argument('--save_dir', type=str, default="data/chexzero-experiments/", help="Directory to save the trained model.")
+    parser.add_argument('--save_dir', type=str, default="data/chexzero/experiments/", help="Directory to save the trained model.")
     parser.add_argument('--seed', type=int, default=1234)
     parser.add_argument('--optimizer', type=str, default="sgd")
     parser.add_argument('--momentum', type=float, default=0.9)
@@ -52,7 +52,7 @@ def parse_args():
 #     'epochs': 10,
 #     'lr': 5e-5,
 #     'val_interval': 100,
-#     'save_dir': 'data/chexzero-experiments/',
+#     'save_dir': 'data/chexzero/experiments/',
 #     'seed': 1234,
 #     'optimizer': 'sgd',
 #     'momentum': 0.9,
@@ -78,7 +78,7 @@ def experiment_pipeline(
         
     logger = logging.getLogger(__name__)
     log_path = os.path.join(model_save_dir, 'log.log')
-    logging.basicConfig(filename=log_path, encoding='utf-8', level=logging.DEBUG)
+    logging.basicConfig(filename=log_path, filemode='a', encoding='utf-8', level=logging.DEBUG)
     
     # save config dictionary
     config_path = os.path.join(model_save_dir, "config.json")
